@@ -1,5 +1,5 @@
-#ifndef MLIR_DIALECT_INET_INETDIALECT_H_
-#define MLIR_DIALECT_INET_INETDIALECT_H_
+#ifndef MLIR_DIALECT_INET_INET_H_
+#define MLIR_DIALECT_INET_INET_H_
 
 #include "mlir/Bytecode/BytecodeOpInterface.h"
 #include "mlir/IR/BuiltinTypes.h"
@@ -9,10 +9,10 @@
 
 #include "mlir/Dialect/Inet/InetDialect.h.inc"
 
-#define GET_TYPEDEF_CLASSES
-#include "mlir/Dialect/Inet/InetTypes.h.inc"
+// #define GET_TYPEDEF_CLASSES
+// #include "mlir/Dialect/Inet/Inet.h.inc"
 
 #define GET_OP_CLASSES
 #include "mlir/Dialect/Inet/Inet.h.inc"
 
-#endif // MLIR_DIALECT_INET_INETDIALECT_H_
+#endif // MLIR_DIALECT_INET_INET_H_
