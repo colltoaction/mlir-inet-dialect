@@ -5,6 +5,7 @@ include "mlir/IR/AttrTypeBase.td"
 include "mlir/IR/BuiltinTypes.td"
 include "mlir/IR/DialectBase.td"
 include "mlir/IR/OpBase.td"
+include "mlir/IR/RegionKindInterface.td"
 include "mlir/Interfaces/SideEffectInterfaces.td"
 
 def Inet_Dialect : Dialect {
@@ -13,6 +14,7 @@ def Inet_Dialect : Dialect {
   // let hasCanonicalizer = 1;
   // let hasConstantMaterializer = 1;
   // let useDefaultAttributePrinterParser = 1;
+  // let useDefaultTypePrinterParser = 1;
 }
 
 class Inet_Type<string name, string typeMnemonic, list<Trait> traits = []>
@@ -26,9 +28,10 @@ class Inet_Type<string name, string typeMnemonic, list<Trait> traits = []>
 // def Inet_ConType : Inet_Type<"Inet", "dup"> {}
 // def Inet_DupType : Inet_Type<"Inet", "con"> {}
 
-// def Inet_InetType : Inet_Type<"Inet", "inet"> {
-//   let parameters = (ins "unsigned":$valueType);
-//   let hasCustomAssemblyFormat = 1;
+// def Inet_PortType : Inet_Type<"Inet", "port"> {
+//   let parameters = (ins "Type":$portType);
+//   let assemblyFormat = "`<` $portType `>`";
+//   // let assemblyFormat = "";
 // }
 
 // def InetEra : Inet_Type<"Inet", "era"> {
@@ -42,8 +45,9 @@ class Inet_Op<string mnemonic, list<Trait> traits =[]> :
 }
 
 def Inet_EraOp : Inet_Op<"era", [Pure]> {
-  // let arguments = (ins Inet_EraType:$degreeBound);
-  let assemblyFormat = "attr-dict";
+  let arguments = (ins F64:$principal);
+  let results = (outs F64);
+  let assemblyFormat = "$principal attr-dict";
 }
 
 //===----------------------------------------------------------------------===//
