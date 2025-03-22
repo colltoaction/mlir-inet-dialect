@@ -1,3 +1,7 @@
+set(LLVM_TARGET_DEFINITIONS InetCanonicalization.td)
+mlir_tablegen(InetCanonicalization.inc -gen-rewriters)
+add_public_tablegen_target(MLIRInetCanonicalizationIncGen)
+
 add_mlir_dialect_library(MLIRInetDialect
   Inet.cpp
 
@@ -6,6 +10,7 @@ add_mlir_dialect_library(MLIRInetDialect
 
   DEPENDS
   MLIRInetIncGen
+  MLIRInetCanonicalizationIncGen
 
   LINK_LIBS PUBLIC
   MLIRIR
