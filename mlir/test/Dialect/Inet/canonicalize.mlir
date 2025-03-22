@@ -5,8 +5,10 @@
 func.func @erase_era_era() -> () {
   // %arg0 = "inet.era"(%arg1) : (f64) -> (f64)
   // %arg1 = "inet.era"(%arg0) : (f64) -> (f64)
-  %arg0 = inet.era %arg1
-  %arg1 = inet.era %arg0
+  "inet.inet"() ({
+    %a = inet.era %b
+    %b = inet.era %a
+  }) : () -> ()
   return
 }
 

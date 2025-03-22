@@ -4,6 +4,7 @@
 include "mlir/IR/AttrTypeBase.td"
 include "mlir/IR/BuiltinTypes.td"
 include "mlir/IR/DialectBase.td"
+include "mlir/IR/PatternBase.td"
 include "mlir/IR/OpBase.td"
 include "mlir/IR/RegionKindInterface.td"
 include "mlir/Interfaces/SideEffectInterfaces.td"
@@ -44,10 +45,18 @@ class Inet_Op<string mnemonic, list<Trait> traits =[]> :
 //   let arguments = (ins Inet_InetOPSType:$principal);
 }
 
-def Inet_EraOp : Inet_Op<"era", [Pure]> {
+def Inet_InetOp : Inet_Op<"inet", [] # GraphRegionNoTerminator.traits> {
+  let arguments = (ins Variadic<F64>:$principals);
+  let results = (outs Variadic<F64>:$auxiliaries);
+  let regions = (region AnyRegion:$region);
+  let assemblyFormat = "$principals $region attr-dict-with-keyword type($auxiliaries)";
+  // let assemblyFormat = "$principal attr-dict-with-keyword";
+}
+
+def Inet_EraOp : Inet_Op<"era", []> {
   let arguments = (ins F64:$principal);
   let results = (outs F64);
-  let assemblyFormat = "$principal attr-dict";
+  let assemblyFormat = "$principal attr-dict-with-keyword";
 }
 
 //===----------------------------------------------------------------------===//

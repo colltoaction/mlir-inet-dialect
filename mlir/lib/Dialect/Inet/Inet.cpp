@@ -8,6 +8,7 @@
 #include "mlir/IR/Dialect.h"
 #include "mlir/IR/DialectImplementation.h"
 #include "mlir/IR/OpImplementation.h"
+#include "mlir/IR/RegionKindInterface.h"
 #include "mlir/IR/TypeUtilities.h"
 #include "mlir/Interfaces/InferTypeOpInterface.h"
 
@@ -16,10 +17,10 @@ using namespace mlir;
 #include "mlir/Dialect/Inet/InetDialect.cpp.inc"
 
 void inet::InetDialect::initialize() {
-//   addTypes<
-// #define GET_TYPEDEF_LIST
-// #include "mlir/Dialect/Inet/Inet.cpp.inc"
-//       >();
+  addTypes<
+#define GET_TYPEDEF_LIST
+#include "mlir/Dialect/Inet/InetTypes.cpp.inc"
+      >();
   addOperations<
 #define GET_OP_LIST
 #include "mlir/Dialect/Inet/Inet.cpp.inc"
@@ -30,8 +31,8 @@ void inet::InetDialect::initialize() {
 // TableGen'd op method definitions
 //===----------------------------------------------------------------------===//
 
-// #define GET_TYPEDEF_CLASSES
-// #include "mlir/Dialect/Inet/Inet.cpp.inc"
+#define GET_TYPEDEF_CLASSES
+#include "mlir/Dialect/Inet/InetTypes.cpp.inc"
 
 #define GET_OP_CLASSES
 #include "mlir/Dialect/Inet/Inet.cpp.inc"
