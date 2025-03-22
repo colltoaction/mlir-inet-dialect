@@ -8,11 +8,39 @@
 #include "mlir/IR/Dialect.h"
 #include "mlir/IR/DialectImplementation.h"
 #include "mlir/IR/OpImplementation.h"
+#include "mlir/IR/PatternMatch.h"
 #include "mlir/IR/RegionKindInterface.h"
 #include "mlir/IR/TypeUtilities.h"
 #include "mlir/Interfaces/InferTypeOpInterface.h"
 
 using namespace mlir;
+
+
+//===----------------------------------------------------------------------===//
+// TableGen'd canonicalization patterns
+//===----------------------------------------------------------------------===//
+
+namespace {
+#include "InetCanonicalization.inc"
+} // namespace
+
+
+
+void inet::InetOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                               MLIRContext *context) {
+  // patterns.add<EraseEraseAnnihilation>(context);
+}
+
+void inet::EraOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                              MLIRContext *context) {
+  patterns.add<EraseEraseAnnihilation>(context);
+}
+
+void inet::EmptyOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                MLIRContext *context) {
+  // patterns.add<EraseEraseAnnihilation>(context);
+}
+
 
 #include "mlir/Dialect/Inet/InetDialect.cpp.inc"
 
@@ -26,7 +54,6 @@ void inet::InetDialect::initialize() {
 #include "mlir/Dialect/Inet/Inet.cpp.inc"
       >();
 }
-
 //===----------------------------------------------------------------------===//
 // TableGen'd op method definitions
 //===----------------------------------------------------------------------===//
