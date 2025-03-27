@@ -43,28 +43,34 @@ class Inet_Type<string name, string typeMnemonic, list<Trait> traits = []>
 class Inet_Op<string mnemonic, list<Trait> traits =[]> :
     Op<Inet_Dialect, mnemonic, traits # GraphRegionNoTerminator.traits> {
 //   let arguments = (ins Inet_InetOPSType:$principal);
+  let regions = (region AnyRegion:$region);
+  let assemblyFormat = "$region attr-dict-with-keyword";
   let hasCanonicalizer = 1;
 }
 
-def Inet_InetOp : Inet_Op<"inet", []> {
-  let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$region attr-dict-with-keyword";
+def Inet_InetOp : Inet_Op<"inet"> {
   // let hasCanonicalizer = 1;
 }
 
 def Inet_EmptyOp : Inet_Op<"empty"> {
   // let arguments = (ins F64:$principal);
   let results = (outs F64);
-  // let assemblyFormat = "$principal attr-dict-with-keyword";
-  let assemblyFormat = "attr-dict-with-keyword";
+  // let regions = (region AnyRegion:$region);
+  // let assemblyFormat = "$region attr-dict-with-keyword";
   // let hasCanonicalizer = 1;
 }
 
-def Inet_EraOp : Inet_Op<"era"> {
-  let arguments = (ins F64:$principal);
+def Inet_EraseOp : Inet_Op<"erase"> {
   let results = (outs F64);
-  let assemblyFormat = "$principal attr-dict-with-keyword";
-  // let hasCanonicalizer = 1;
+}
+
+def Inet_ConstructOp : Inet_Op<"construct"> {
+  let results = (outs F64);
+}
+
+def Inet_CoEraseOp : Inet_Op<"coerase"> {
+  let arguments = (ins F64:$principal);
+  let assemblyFormat = "$principal $region attr-dict-with-keyword";
 }
 
 //===----------------------------------------------------------------------===//

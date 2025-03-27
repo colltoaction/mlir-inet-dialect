@@ -31,9 +31,19 @@ void inet::InetOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
   // patterns.add<EraseEraseAnnihilation>(context);
 }
 
-void inet::EraOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                              MLIRContext *context) {
-  patterns.add<EraseEraseAnnihilation>(context);
+void inet::EraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                MLIRContext *context) {
+  patterns.add<EraseCoEraseAnnihilation>(context);
+}
+
+void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                  MLIRContext *context) {
+  patterns.add<EraseCoEraseAnnihilation>(context);
+}
+
+void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                    MLIRContext *context) {
+  patterns.add<ConstructCoEraseCommutation>(context);
 }
 
 void inet::EmptyOp::getCanonicalizationPatterns(RewritePatternSet &patterns,

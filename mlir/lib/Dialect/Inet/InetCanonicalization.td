@@ -5,9 +5,16 @@ include "mlir/IR/PatternBase.td"
 include "mlir/Dialect/Inet/Inet.td"
 
 
-def EraseEraseAnnihilation :
-  Pat<(Inet_EraOp (Inet_EmptyOp)),
-      (Inet_EmptyOp)>;
+def EraseCoEraseAnnihilation :
+  Pattern<
+    (Inet_CoEraseOp (Inet_EraseOp)),
+    [(Inet_InetOp)]>;
+
+
+def ConstructCoEraseCommutation :
+  Pattern<
+    (Inet_CoEraseOp (Inet_ConstructOp)),
+    [(Inet_InetOp)]>;
 
 
 #endif // MLIR_LIB_DIALECT_INET_INETCANONICALIZATION
