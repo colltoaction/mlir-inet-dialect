@@ -23,69 +23,75 @@ class Inet_Type<string name, string typeMnemonic, list<Trait> traits = []>
   let mnemonic = typeMnemonic;
 }
 
-// def Inet_EraType : Inet_Type<"Inet", "era"> {
-//   let hasCustomAssemblyFormat = 1;
-// }
-// def Inet_ConType : Inet_Type<"Inet", "dup"> {}
-// def Inet_DupType : Inet_Type<"Inet", "con"> {}
-
-// def Inet_PortType : Inet_Type<"Inet", "port"> {
-//   let parameters = (ins "Type":$portType);
-//   let assemblyFormat = "`<` $portType `>`";
-//   // let assemblyFormat = "";
-// }
-
-// def InetEra : Inet_Type<"Inet", "era"> {
-  // let parameters = (ins "asd":$degreeBound);
-  // let hasCustomAssemblyFormat = 1;
-// }
-
-class Inet_Op<string mnemonic, list<Trait> traits =[]> :
-    Op<Inet_Dialect, mnemonic, traits # GraphRegionNoTerminator.traits> {
-//   let arguments = (ins Inet_InetOPSType:$principal);
-  let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$region attr-dict-with-keyword";
-  let hasCanonicalizer = 1;
-}
-
-def Inet_InetOp : Inet_Op<"inet"> {
-  // let hasCanonicalizer = 1;
-}
-
-def Inet_EmptyOp : Inet_Op<"empty"> {
-  // let arguments = (ins F64:$principal);
-  let results = (outs F64);
-  // let regions = (region AnyRegion:$region);
-  // let assemblyFormat = "$region attr-dict-with-keyword";
-  // let hasCanonicalizer = 1;
-}
-
-def Inet_EraseOp : Inet_Op<"erase"> {
-  let results = (outs F64);
-}
-
-def Inet_ConstructOp : Inet_Op<"construct"> {
-  let results = (outs F64);
-}
-
-def Inet_CoEraseOp : Inet_Op<"coerase"> {
-  let arguments = (ins F64:$principal);
-  let assemblyFormat = "$principal $region attr-dict-with-keyword";
-}
-
 //===----------------------------------------------------------------------===//
 // Inet Operations
 //===----------------------------------------------------------------------===//
 
-// class EraOp<Inet_Op principal> : Inet_Op<"era">;
-// class ConOp<Inet_Op principal, list<Inet_Op> secondary> : Inet_Op<"dup">;
-// class DupOp<Inet_Op principal, list<Inet_Op> secondary> : Inet_Op<"con">;
 
-// def EraOp2 : EraOp<> {
-//   let summary = "era";
-//   let arguments = (ins EraOpAttr:$principal);
-//   let results = (outs F64Tensor);
-// }
+class Inet_Op<string mnemonic, list<Trait> traits =[]> :
+    Op<Inet_Dialect, mnemonic, traits # GraphRegionNoTerminator.traits> {
+  let hasCanonicalizer = 1;
+}
+
+def Inet_InetOp : Inet_Op<"inet"> {
+  let regions = (region AnyRegion:$region);
+  let assemblyFormat = "$region attr-dict-with-keyword";
+}
+
+def Inet_EmptyOp : Inet_Op<"empty"> {
+}
+
+def Inet_EraseOp : Inet_Op<"erase"> {
+  let results = (outs F64);
+  let regions = (region AnyRegion:$region);
+  let assemblyFormat = "$region attr-dict-with-keyword";
+}
+
+def Inet_CoEraseOp : Inet_Op<"coerase"> {
+  let arguments = (ins F64:$principal);
+  let regions = (region AnyRegion:$region);
+  let assemblyFormat = "$principal $region attr-dict-with-keyword";
+}
+
+def Inet_ConstructOp : Inet_Op<"construct"> {
+  let regions = (region AnyRegion:$region);
+  let results = (outs F64, F64, F64);
+  let assemblyFormat = "$region attr-dict-with-keyword";
+}
+
+def Inet_CoConstructOp : Inet_Op<"coconstruct"> {
+  let arguments = (ins F64:$principal, F64:$left, F64:$right);
+  let regions = (region AnyRegion:$region);
+  let assemblyFormat = "$principal $left $right $region attr-dict-with-keyword";
+}
+
+def Inet_DuplicateOp : Inet_Op<"duplicate"> {
+  let regions = (region AnyRegion:$region);
+  let results = (outs F64, F64, F64);
+  let assemblyFormat = "$region attr-dict-with-keyword";
+}
+
+def Inet_CoDuplicateOp : Inet_Op<"coduplicate"> {
+  let arguments = (ins F64:$principal, F64:$left, F64:$right);
+  let regions = (region AnyRegion:$region);
+  let assemblyFormat = "$principal $left $right $region attr-dict-with-keyword";
+}
+
+//===----------------------------------------------------------------------===//
+// Monoidal Operations
+//===----------------------------------------------------------------------===//
+
+def Inet_CupOp : Inet_Op<"cup"> {
+  let arguments = (ins F64:$left, F64:$right);
+  let regions = (region AnyRegion:$region);
+  let assemblyFormat = "$left $right $region attr-dict-with-keyword";
+}
+
+def Inet_CapOp : Inet_Op<"cap"> {
+  let results = (outs F64, F64);
+  let regions = (region AnyRegion:$region);
+  let assemblyFormat = "$region attr-dict-with-keyword";
+}
 
 
 #endif // MLIR_DIALECT_INET_INET
