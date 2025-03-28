@@ -16,28 +16,18 @@ func.func @erase_coerase_annihilation() -> () {
 
 // CHECK-LABEL: @construct_coconstruct_annihilation
 // CHECK-NEXT: inet.inet {
-// CHECK-NEXT:   %0:3 = inet.construct {
+// CHECK-NEXT:   %0 = inet.erase {
 // CHECK-NEXT:   }
-// CHECK-NEXT:   "inet.empty"() : () -> ()
+// CHECK-NEXT:   %1 = inet.construct %0 %0 {
+// CHECK-NEXT:   }
+// CHECK-NEXT:   %2:2 = inet.swap %0 %0 {
+// CHECK-NEXT:   }
 // CHECK-NEXT: }
 func.func @construct_coconstruct_annihilation() -> () {
   inet.inet {
-    %a, %b, %e = inet.construct {}
-    inet.coconstruct %a %b %e {}
-  }
-  return
-}
-
-// CHECK-LABEL: @duplicate_coduplicate_annihilation
-// CHECK-NEXT: inet.inet {
-// CHECK-NEXT:   %0:3 = inet.duplicate {
-// CHECK-NEXT:   }
-// CHECK-NEXT:   "inet.empty"() : () -> ()
-// CHECK-NEXT: }
-func.func @duplicate_coduplicate_annihilation() -> () {
-  inet.inet {
-    %a, %b, %e = inet.duplicate {}
-    inet.coduplicate %a %b %e {}
+    %e = inet.erase {}
+    %a = inet.construct %e %e {}
+    inet.coconstruct %a {}
   }
   return
 }
