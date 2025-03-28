@@ -28,7 +28,10 @@ namespace {
 
 void inet::InetOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                MLIRContext *context) {
-  // patterns.add<EraseEraseAnnihilation>(context);
+}
+
+void inet::EmptyOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                MLIRContext *context) {
 }
 
 void inet::EraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
@@ -38,7 +41,7 @@ void inet::EraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
 
 void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                   MLIRContext *context) {
-  patterns.add<EraseCoEraseAnnihilation>(context);
+  // patterns.add<EraseCoEraseAnnihilation>(context);
 }
 
 void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
@@ -46,9 +49,24 @@ void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
   patterns.add<ConstructCoEraseCommutation>(context);
 }
 
-void inet::EmptyOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                MLIRContext *context) {
-  // patterns.add<EraseEraseAnnihilation>(context);
+void inet::CoConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                      MLIRContext *context) {
+}
+
+void inet::DuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                    MLIRContext *context) {
+}
+
+void inet::CoDuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                      MLIRContext *context) {
+}
+
+void inet::CupOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                              MLIRContext *context) {
+}
+
+void inet::CapOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                              MLIRContext *context) {
 }
 
 
