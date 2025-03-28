@@ -4,7 +4,7 @@
 // CHECK-NEXT: inet.inet {
 // CHECK-NEXT:   inet.erase {
 // CHECK-NEXT:   }
-// CHECK-NEXT:   inet.inet
+// CHECK-NEXT:   "inet.empty"() : () -> ()
 // CHECK-NEXT: }
 func.func @erase_coerase_annihilation() -> () {
   inet.inet {
@@ -14,17 +14,30 @@ func.func @erase_coerase_annihilation() -> () {
   return
 }
 
-// CHECK-LABEL: @erase_era_era
+// CHECK-LABEL: @construct_coconstruct_annihilation
 // CHECK-NEXT: inet.inet {
 // CHECK-NEXT:   %0:3 = inet.construct {
 // CHECK-NEXT:   }
-// CHECK-NEXT:   inet.coconstruct %0#0 %0#1 %0#2 {
-// CHECK-NEXT:   }
+// CHECK-NEXT:   "inet.empty"() : () -> ()
 // CHECK-NEXT: }
-func.func @erase_era_era() -> () {
+func.func @construct_coconstruct_annihilation() -> () {
   inet.inet {
     %a, %b, %e = inet.construct {}
     inet.coconstruct %a %b %e {}
+  }
+  return
+}
+
+// CHECK-LABEL: @duplicate_coduplicate_annihilation
+// CHECK-NEXT: inet.inet {
+// CHECK-NEXT:   %0:3 = inet.duplicate {
+// CHECK-NEXT:   }
+// CHECK-NEXT:   "inet.empty"() : () -> ()
+// CHECK-NEXT: }
+func.func @duplicate_coduplicate_annihilation() -> () {
+  inet.inet {
+    %a, %b, %e = inet.duplicate {}
+    inet.coduplicate %a %b %e {}
   }
   return
 }

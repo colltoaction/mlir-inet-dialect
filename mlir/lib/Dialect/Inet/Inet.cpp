@@ -46,11 +46,11 @@ void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
 
 void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                     MLIRContext *context) {
-  patterns.add<ConstructCoEraseCommutation>(context);
 }
 
 void inet::CoConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                       MLIRContext *context) {
+  patterns.add<ConstructCoConstructAnnihilation>(context);
 }
 
 void inet::DuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
@@ -59,6 +59,7 @@ void inet::DuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
 
 void inet::CoDuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                       MLIRContext *context) {
+  patterns.add<DuplicateCoDuplicateAnnihilation>(context);
 }
 
 void inet::CupOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
