@@ -59,7 +59,15 @@ void inet::DuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
 
 void inet::CoDuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                       MLIRContext *context) {
-  patterns.add<DuplicateCoDuplicateAnnihilation>(context);
+  // patterns.add<DuplicateCoDuplicateAnnihilation>(context);
+}
+
+void inet::SwapOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                               MLIRContext *context) {
+}
+
+void inet::IdOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                               MLIRContext *context) {
 }
 
 void inet::CupOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
