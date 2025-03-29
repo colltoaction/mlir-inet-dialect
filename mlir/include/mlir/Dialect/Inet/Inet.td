@@ -39,46 +39,47 @@ def Inet_InetOp : Inet_Op<"inet"> {
 }
 
 def Inet_EmptyOp : Inet_Op<"empty"> {
+  let assemblyFormat = "attr-dict-with-keyword";
 }
 
 def Inet_EraseOp : Inet_Op<"erase"> {
-  let results = (outs F64);
+  let results = (outs AnyType);
   let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$region attr-dict-with-keyword";
+  let assemblyFormat = "$region type(results) attr-dict-with-keyword";
 }
 
 def Inet_CoEraseOp : Inet_Op<"coerase"> {
-  let arguments = (ins F64:$principal);
+  let arguments = (ins AnyType:$principal);
   let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$principal $region attr-dict-with-keyword";
+  let assemblyFormat = "type($principal) $principal $region attr-dict-with-keyword";
 }
 
 def Inet_ConstructOp : Inet_Op<"construct"> {
-  let arguments = (ins F64:$left, F64:$right);
-  let results = (outs F64);
+  let arguments = (ins AnyType:$left, AnyType:$right);
+  let results = (outs AnyType);
   let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$left $right $region attr-dict-with-keyword";
+  let assemblyFormat = "type($left) $left type($right) $right type(results) $region attr-dict-with-keyword";
 }
 
 def Inet_CoConstructOp : Inet_Op<"coconstruct"> {
-  let arguments = (ins F64:$principal);
-  let results = (outs F64, F64);
+  let arguments = (ins AnyType:$principal);
+  let results = (outs AnyType, AnyType);
   let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$principal $region attr-dict-with-keyword";
+  let assemblyFormat = "type($principal) $principal type(results) $region attr-dict-with-keyword";
 }
 
 def Inet_DuplicateOp : Inet_Op<"duplicate"> {
-  let arguments = (ins F64:$left, F64:$right);
-  let results = (outs F64);
+  let arguments = (ins AnyType:$left, AnyType:$right);
+  let results = (outs AnyType);
   let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$left $right $region attr-dict-with-keyword";
+  let assemblyFormat = "type($left) $left type($right) $right type(results) $region attr-dict-with-keyword";
 }
 
 def Inet_CoDuplicateOp : Inet_Op<"coduplicate"> {
-  let arguments = (ins F64:$principal);
-  let results = (outs F64, F64);
+  let arguments = (ins AnyType:$principal);
+  let results = (outs AnyType, AnyType);
   let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$principal $region attr-dict-with-keyword";
+  let assemblyFormat = "type($principal) $principal type(results) $region attr-dict-with-keyword";
 }
 
 //===----------------------------------------------------------------------===//
@@ -86,29 +87,36 @@ def Inet_CoDuplicateOp : Inet_Op<"coduplicate"> {
 //===----------------------------------------------------------------------===//
 
 def Inet_IdOp : Inet_Op<"id"> {
-  let arguments = (ins F64:$principal);
-  let results = (outs F64);
+  let arguments = (ins AnyType:$principal);
+  let results = (outs AnyType);
   let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$principal $region attr-dict-with-keyword";
+  let assemblyFormat = "type($principal) $principal type(results) $region attr-dict-with-keyword";
+}
+
+def Inet_TensorOp : Inet_Op<"tensor"> {
+  let arguments = (ins AnyType:$left, AnyType:$right);
+  let results = (outs AnyType, AnyType);
+  let regions = (region AnyRegion:$region);
+  let assemblyFormat = "type($left) $left type($right) $right type(results) $region attr-dict-with-keyword";
 }
 
 def Inet_SwapOp : Inet_Op<"swap"> {
-  let arguments = (ins F64:$left, F64:$right);
-  let results = (outs F64, F64);
+  let arguments = (ins AnyType:$left, AnyType:$right);
+  let results = (outs AnyType, AnyType);
   let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$left $right $region attr-dict-with-keyword";
+  let assemblyFormat = "type($left) $left type($right) $right type(results) $region attr-dict-with-keyword";
 }
 
 def Inet_CupOp : Inet_Op<"cup"> {
-  let arguments = (ins F64:$left, F64:$right);
+  let arguments = (ins AnyType:$left, AnyType:$right);
   let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$left $right $region attr-dict-with-keyword";
+  let assemblyFormat = "type($left) $left type($right) $right $region attr-dict-with-keyword";
 }
 
 def Inet_CapOp : Inet_Op<"cap"> {
-  let results = (outs F64, F64);
+  let results = (outs AnyType, AnyType);
   let regions = (region AnyRegion:$region);
-  let assemblyFormat = "$region attr-dict-with-keyword";
+  let assemblyFormat = "$region type(results) attr-dict-with-keyword";
 }
 
 

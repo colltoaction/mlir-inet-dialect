@@ -5,22 +5,47 @@ include "mlir/IR/PatternBase.td"
 include "mlir/Dialect/Inet/Inet.td"
 
 
-def EraseCoEraseAnnihilation :
+def CoEraseEraseAnnihilation :
   Pattern<
     (Inet_CoEraseOp (Inet_EraseOp)),
     [(Inet_EmptyOp)]>;
 
 
-def ConstructCoConstructAnnihilation :
+def CoConstructConstructAnnihilation :
   Pattern<
-    (Inet_CoConstructOp (Inet_ConstructOp (Inet_EraseOp:$a), (Inet_EraseOp:$b))),
+    (Inet_CoConstructOp (Inet_ConstructOp $a, $b)),
     [(Inet_SwapOp $a, $b)]>;
 
 
 // def DuplicateCoDuplicateAnnihilation :
 //   Pattern<
-//     (Inet_CoDuplicateOp (Inet_DuplicateOp), (Inet_DuplicateOp)),
-//     [(Inet_EmptyOp)]>;
+//     (Inet_CoDuplicateOp (Inet_DuplicateOp $a, $b)),
+//     [(Inet_SwapOp $a, $b)]>;
+
+
+// def CoEraseDuplicateCommutation :
+//   Pattern<
+//     (Inet_CoEraseOp (Inet_DuplicateOp $a, $b)),
+//     [(Inet_SwapOp $a, $b)]>;
+
+
+// def CoEraseConstructCommutation :
+//   Pattern<
+//     (Inet_CoEraseOp (Inet_ConstructOp $a, $b)),
+//     [(Inet_SwapOp $a, $b)]>;
+
+
+// def CoConstructEraseCommutation :
+//   Pattern<
+//     (Inet_CoConstructOp (Inet_EraseOp:$a)),
+//     [(Inet_TensorOp $a, $a)]>;
+
+
+// def CoDuplicateEraseCommutation :
+//   Pattern<
+//     (Inet_CoDuplicateOp (Inet_EraseOp:$a)),
+//     [(Inet_TensorOp $a, $a)]>;
+
 
 
 #endif // MLIR_LIB_DIALECT_INET_INETCANONICALIZATION
