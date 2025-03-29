@@ -17,6 +17,18 @@ def CoConstructConstructAnnihilation :
     [(Inet_SwapOp $a, $b)]>;
 
 
+def CoEraseConstructCommutation :
+  Pattern<
+    (Inet_CoEraseOp:$a (Inet_ConstructOp $b, $c)),
+    [(replaceWithValue $a)]>;
+
+
+def CoConstructEraseCommutation :
+  Pattern<
+    (Inet_CoConstructOp (Inet_EraseOp:$a)),
+    [(Inet_TensorOp $a, $a)]>;
+
+
 // def DuplicateCoDuplicateAnnihilation :
 //   Pattern<
 //     (Inet_CoDuplicateOp (Inet_DuplicateOp $a, $b)),
@@ -27,18 +39,6 @@ def CoConstructConstructAnnihilation :
 //   Pattern<
 //     (Inet_CoEraseOp (Inet_DuplicateOp $a, $b)),
 //     [(Inet_SwapOp $a, $b)]>;
-
-
-// def CoEraseConstructCommutation :
-//   Pattern<
-//     (Inet_CoEraseOp (Inet_ConstructOp $a, $b)),
-//     [(Inet_SwapOp $a, $b)]>;
-
-
-// def CoConstructEraseCommutation :
-//   Pattern<
-//     (Inet_CoConstructOp (Inet_EraseOp:$a)),
-//     [(Inet_TensorOp $a, $a)]>;
 
 
 // def CoDuplicateEraseCommutation :
