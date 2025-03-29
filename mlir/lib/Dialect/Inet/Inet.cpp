@@ -36,12 +36,12 @@ void inet::EmptyOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
 
 void inet::EraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                 MLIRContext *context) {
-  patterns.add<EraseCoEraseAnnihilation>(context);
+  // patterns.add<EraseCoEraseAnnihilation>(context);
 }
 
 void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                   MLIRContext *context) {
-  // patterns.add<EraseCoEraseAnnihilation>(context);
+  patterns.add<CoEraseEraseAnnihilation>(context);
 }
 
 void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
@@ -50,7 +50,7 @@ void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
 
 void inet::CoConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                       MLIRContext *context) {
-  patterns.add<ConstructCoConstructAnnihilation>(context);
+  patterns.add<CoConstructConstructAnnihilation>(context);
 }
 
 void inet::DuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
@@ -62,11 +62,15 @@ void inet::CoDuplicateOp::getCanonicalizationPatterns(RewritePatternSet &pattern
   // patterns.add<DuplicateCoDuplicateAnnihilation>(context);
 }
 
-void inet::SwapOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                               MLIRContext *context) {
+void inet::IdOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                             MLIRContext *context) {
 }
 
-void inet::IdOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+void inet::TensorOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                 MLIRContext *context) {
+}
+
+void inet::SwapOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                MLIRContext *context) {
 }
 
