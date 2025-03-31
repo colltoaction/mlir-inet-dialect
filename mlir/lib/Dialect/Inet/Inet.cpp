@@ -47,6 +47,8 @@ void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
 
 void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                     MLIRContext *context) {
+  patterns.add<ConstructEraseLeftSimplification>(context);
+  patterns.add<ConstructEraseRightSimplification>(context);
 }
 
 void inet::CoConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
