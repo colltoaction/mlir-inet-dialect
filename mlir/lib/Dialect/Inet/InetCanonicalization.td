@@ -7,26 +7,38 @@ include "mlir/Dialect/Inet/Inet.td"
 
 def CoEraseEraseAnnihilation :
   Pattern<
-    (Inet_CoEraseOp (Inet_EraseOp)),
-    [(Inet_EmptyOp)]>;
+    (Inet_CoEraseOp (Inet_EraseOp:$a)),
+    [(replaceWithValue $a)]>;
 
 
 def CoConstructConstructAnnihilation :
   Pattern<
     (Inet_CoConstructOp (Inet_ConstructOp $a, $b)),
-    [(Inet_SwapOp $a, $b)]>;
+    [(replaceWithValue $b), (replaceWithValue $a)]>;
 
 
 def CoEraseConstructCommutation :
   Pattern<
     (Inet_CoEraseOp:$a (Inet_ConstructOp $b, $c)),
-    [(replaceWithValue $a)]>;
+    []>;
 
 
 def CoConstructEraseCommutation :
   Pattern<
     (Inet_CoConstructOp (Inet_EraseOp:$a)),
-    [(Inet_TensorOp $a, $a)]>;
+    [(replaceWithValue $a), (replaceWithValue $a)]>;
+
+
+def ConstructEraseLeftSimplification :
+  Pattern<
+    (Inet_ConstructOp (Inet_EraseOp:$a), $b),
+    [(replaceWithValue $b)]>;
+
+
+def ConstructEraseRightSimplification :
+  Pattern<
+    (Inet_ConstructOp $a, (Inet_EraseOp:$b)),
+    [(replaceWithValue $a)]>;
 
 
 // def DuplicateCoDuplicateAnnihilation :

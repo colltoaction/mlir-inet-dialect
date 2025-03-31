@@ -18,7 +18,7 @@ def Inet_Dialect : Dialect {
   // let useDefaultTypePrinterParser = 1;
 }
 
-class Inet_Type<string name, string typeMnemonic, list<Trait> traits = []>
+class Inet_Type<string name, string typeMnemonic, list<Trait> traits = [Pure]>
     : TypeDef<Inet_Dialect, name, traits> {
   let mnemonic = typeMnemonic;
 }
@@ -35,6 +35,7 @@ class Inet_Op<string mnemonic, list<Trait> traits =[]> :
 
 def Inet_InetOp : Inet_Op<"inet"> {
   // let regions = (region AnyRegion:$region);
+  // let arguments = (ins Variadic<AnyType>:$ports);
   let assemblyFormat = "attr-dict-with-keyword";
 }
 
@@ -93,7 +94,7 @@ def Inet_IdOp : Inet_Op<"id"> {
   let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
 }
 
-def Inet_TensorOp : Inet_Op<"tensor"> {
+def Inet_TensorOp : Inet_Op<"tensor", [ElementwiseMappable, Commutative]> {
   let arguments = (ins AnyType:$left, AnyType:$right);
   let results = (outs AnyType, AnyType);
   // let regions = (region AnyRegion:$region);
