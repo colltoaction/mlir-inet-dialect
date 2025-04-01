@@ -18,7 +18,7 @@ def Inet_Dialect : Dialect {
   // let useDefaultTypePrinterParser = 1;
 }
 
-class Inet_Type<string name, string typeMnemonic, list<Trait> traits = [Pure]>
+class Inet_Type<string name, string typeMnemonic, list<Trait> traits = []>
     : TypeDef<Inet_Dialect, name, traits> {
   let mnemonic = typeMnemonic;
 }
@@ -28,7 +28,7 @@ class Inet_Type<string name, string typeMnemonic, list<Trait> traits = [Pure]>
 //===----------------------------------------------------------------------===//
 
 
-class Inet_Op<string mnemonic, list<Trait> traits =[]> :
+class Inet_Op<string mnemonic, list<Trait> traits =[Pure]> :
     Op<Inet_Dialect, mnemonic, traits> {
   let hasCanonicalizer = 1;
 }
