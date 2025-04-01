@@ -4,6 +4,7 @@ add_public_tablegen_target(MLIRInetCanonicalizationIncGen)
 
 add_mlir_dialect_library(MLIRInetDialect
   Inet.cpp
+  InetCanonicalization.td
 
   ADDITIONAL_HEADER_DIRS
   ${MLIR_MAIN_INCLUDE_DIR}/mlir/Dialect/Inet
@@ -15,4 +16,5 @@ add_mlir_dialect_library(MLIRInetDialect
   LINK_LIBS PUBLIC
   MLIRIR
   MLIRSideEffectInterfaces
+  MLIRInferTypeOpInterface
   )
