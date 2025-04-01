@@ -45,8 +45,6 @@ def CoDuplicateConstructCommutation :
   Pattern<
     (Inet_CoDuplicateOp (Inet_ConstructOp:$a $c, $d)),
     [
-      // annihilation->swap
-      // (Inet_CoConstructOp:$swapped $a, (returnType $c, $d)),
       (Inet_CoDuplicateOp:$e $c, (returnType $c, $d)),
       (Inet_CoDuplicateOp:$f $d, (returnType $c, $d)),
       (Inet_ConstructOp $e__0, $f__0),
@@ -54,23 +52,15 @@ def CoDuplicateConstructCommutation :
     ]>;
 
 
-// def DuplicateCoDuplicateAnnihilation :
-//   Pattern<
-//     (Inet_CoDuplicateOp (Inet_DuplicateOp $a, $b)),
-//     [(Inet_SwapOp $a, $b)]>;
-
-
-// def CoEraseDuplicateCommutation :
-//   Pattern<
-//     (Inet_CoEraseOp (Inet_DuplicateOp $a, $b)),
-//     [(Inet_SwapOp $a, $b)]>;
-
-
-// def CoDuplicateEraseCommutation :
-//   Pattern<
-//     (Inet_CoDuplicateOp (Inet_EraseOp:$a)),
-//     [(Inet_TensorOp $a, $a)]>;
-
+def CoConstructDuplicateCommutation :
+  Pattern<
+    (Inet_CoConstructOp (Inet_DuplicateOp:$a $c, $d)),
+    [
+      (Inet_CoConstructOp:$e $c, (returnType $c, $d)),
+      (Inet_CoConstructOp:$f $d, (returnType $c, $d)),
+      (Inet_DuplicateOp $e__0, $f__0),
+      (Inet_DuplicateOp $e__1, $f__1)
+    ]>;
 
 
 #endif // MLIR_LIB_DIALECT_INET_INETCANONICALIZATION
