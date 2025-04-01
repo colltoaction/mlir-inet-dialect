@@ -56,6 +56,7 @@ void inet::DuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
 
 void inet::CoDuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                       MLIRContext *context) {
+  patterns.add<CoDuplicateDuplicateAnnihilation>(context);
   patterns.add<CoDuplicateConstructCommutation>(context);
 }
 
