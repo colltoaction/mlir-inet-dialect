@@ -68,3 +68,16 @@ func.func @coduplicate_construct_commutation(%arg0 : f64, %arg1 : f64) -> (f64, 
   return %b, %c : f64, f64
 }
 
+// CHECK-LABEL: @coconstruct_duplicate_commutation
+// CHECK:       (%arg0: f64, %arg1: f64) -> (f64, f64) {
+// CHECK-NEXT:  %0:2 = inet.coconstruct f64 %arg0 f64, f64
+// CHECK-NEXT:  %1:2 = inet.coconstruct f64 %arg1 f64, f64
+// CHECK-NEXT:  %2 = inet.duplicate f64 %0#0 f64 %1#0 f64
+// CHECK-NEXT:  %3 = inet.duplicate f64 %0#1 f64 %1#1 f64
+// CHECK-NEXT:  return %2, %3 : f64, f64
+func.func @coconstruct_duplicate_commutation(%arg0 : f64, %arg1 : f64) -> (f64, f64) {
+  %a = inet.duplicate f64 %arg0 f64 %arg1 f64
+  %b, %c = inet.coconstruct f64 %a f64, f64
+  return %b, %c : f64, f64
+}
+
