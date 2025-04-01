@@ -81,5 +81,16 @@ def ConstructEraseRightSimplification :
     (Inet_ConstructOp $a, (Inet_EraseOp:$b)),
     [(replaceWithValue $a)]>;
 
+def DuplicateEraseLeftSimplification :
+  Pattern<
+    (Inet_DuplicateOp (Inet_EraseOp:$a), $b),
+    [(replaceWithValue $b)]>;
+
+
+def DuplicateEraseRightSimplification :
+  Pattern<
+    (Inet_DuplicateOp $a, (Inet_EraseOp:$b)),
+    [(replaceWithValue $a)]>;
+
 
 #endif // MLIR_LIB_DIALECT_INET_INETCANONICALIZATION

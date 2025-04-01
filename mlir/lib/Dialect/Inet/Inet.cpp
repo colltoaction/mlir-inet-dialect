@@ -28,7 +28,6 @@ namespace {
 
 void inet::EraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                 MLIRContext *context) {
-  // patterns.add<EraseCoEraseAnnihilation>(context);
 }
 
 void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
@@ -52,6 +51,8 @@ void inet::CoConstructOp::getCanonicalizationPatterns(RewritePatternSet &pattern
 
 void inet::DuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                     MLIRContext *context) {
+  patterns.add<DuplicateEraseLeftSimplification>(context);
+  patterns.add<DuplicateEraseRightSimplification>(context);
 }
 
 void inet::CoDuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
