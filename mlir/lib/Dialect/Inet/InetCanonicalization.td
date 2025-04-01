@@ -5,6 +5,10 @@ include "mlir/IR/PatternBase.td"
 include "mlir/Dialect/Inet/Inet.td"
 
 
+//===----------------------------------------------------------------------===//
+// Standard SIC reduction rules
+//===----------------------------------------------------------------------===//
+
 def CoEraseEraseAnnihilation :
   Pattern<
     (Inet_CoEraseOp (Inet_EraseOp)),
@@ -17,9 +21,21 @@ def CoConstructConstructAnnihilation :
     [(replaceWithValue $b), (replaceWithValue $a)]>;
 
 
+def CoDuplicateDuplicateAnnihilation :
+  Pattern<
+    (Inet_CoDuplicateOp (Inet_DuplicateOp $a, $b)),
+    [(replaceWithValue $b), (replaceWithValue $a)]>;
+
+
 def CoEraseConstructCommutation :
   Pattern<
     (Inet_CoEraseOp:$a (Inet_ConstructOp $b, $c)),
+    []>;
+
+
+def CoEraseDuplicateCommutation :
+  Pattern<
+    (Inet_CoEraseOp:$a (Inet_DuplicateOp $b, $c)),
     []>;
 
 
@@ -27,18 +43,6 @@ def CoConstructEraseCommutation :
   Pattern<
     (Inet_CoConstructOp (Inet_EraseOp:$a)),
     [(replaceWithValue $a), (replaceWithValue $a)]>;
-
-
-def ConstructEraseLeftSimplification :
-  Pattern<
-    (Inet_ConstructOp (Inet_EraseOp:$a), $b),
-    [(replaceWithValue $b)]>;
-
-
-def ConstructEraseRightSimplification :
-  Pattern<
-    (Inet_ConstructOp $a, (Inet_EraseOp:$b)),
-    [(replaceWithValue $a)]>;
 
 
 def CoDuplicateConstructCommutation :
@@ -61,6 +65,21 @@ def CoConstructDuplicateCommutation :
       (Inet_DuplicateOp $e__0, $f__0),
       (Inet_DuplicateOp $e__1, $f__1)
     ]>;
+
+//===----------------------------------------------------------------------===//
+// Simplifications
+//===----------------------------------------------------------------------===//
+
+def ConstructEraseLeftSimplification :
+  Pattern<
+    (Inet_ConstructOp (Inet_EraseOp:$a), $b),
+    [(replaceWithValue $b)]>;
+
+
+def ConstructEraseRightSimplification :
+  Pattern<
+    (Inet_ConstructOp $a, (Inet_EraseOp:$b)),
+    [(replaceWithValue $a)]>;
 
 
 #endif // MLIR_LIB_DIALECT_INET_INETCANONICALIZATION
