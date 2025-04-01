@@ -106,3 +106,21 @@ func.func @construct_erase_right_simplification(%arg0 : f64) -> f64 {
   return %a : f64
 }
 
+// CHECK-LABEL: @duplicate_erase_left_simplification
+// CHECK:       (%arg0: f64) -> f64 {
+// CHECK-NEXT:  return %arg0 : f64
+func.func @duplicate_erase_left_simplification(%arg0 : f64) -> f64 {
+  %e = inet.erase f64
+  %a = inet.duplicate f64 %e f64 %arg0 f64
+  return %a : f64
+}
+
+// CHECK-LABEL: @duplicate_erase_right_simplification
+// CHECK:       (%arg0: f64) -> f64 {
+// CHECK-NEXT:  return %arg0 : f64
+func.func @duplicate_erase_right_simplification(%arg0 : f64) -> f64 {
+  %e = inet.erase f64
+  %a = inet.duplicate f64 %arg0 f64 %e f64
+  return %a : f64
+}
+
