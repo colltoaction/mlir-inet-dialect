@@ -124,3 +124,34 @@ func.func @duplicate_erase_right_simplification(%arg0 : f64) -> f64 {
   return %a : f64
 }
 
+// CHECK-LABEL: @sum_to_20() -> i32 {
+// CHECK-NEXT:  %c0_i32 = arith.constant 0 : i32
+// CHECK-NEXT:  %c1_i32 = arith.constant 1 : i32
+// CHECK-NEXT:  %c20_i32 = arith.constant 20 : i32
+// CHECK-NEXT:  %0:2 = inet.coduplicate i32 %c20_i32 i32, i32
+// CHECK-NEXT:  %1 = inet.construct i32 %0#0 i32 %0#1 i32
+// CHECK-NEXT:  return %1 : i32
+func.func @sum_to_20() -> i32 {
+  %c0 = arith.constant 0 : i32
+  %c1 = arith.constant 1 : i32
+
+  // arithmetic constants will help with compile-time rewriting.
+  // adding and subtracting constants gives new constants.
+  // constant comparison unfolds if statements.
+  %c_param = arith.constant 20 : i32
+  %cond = arith.cmpi eq, %c_param, %c0 : i32
+  %result = scf.if %cond -> i32 {
+    // base case n=0, result=partial
+    %r = inet.construct i32 %c_param i32 %c_param i32
+    scf.yield %r : i32
+  } else {
+    // recursive case TODO
+    %cn4 = arith.subi %c_param, %c1 : i32
+    %partial3 = arith.addi %c_param, %cn4 : i32
+    %partial4 = inet.construct i32 %cn4 i32 %partial3 i32
+    scf.yield %partial4 : i32
+  }
+
+  %total, %_ = inet.coconstruct i32 %result i32, i32
+  return %total : i32
+}
