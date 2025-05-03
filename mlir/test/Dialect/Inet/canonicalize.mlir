@@ -138,20 +138,31 @@ func.func @sum_to_20() -> i32 {
   // arithmetic constants will help with compile-time rewriting.
   // adding and subtracting constants gives new constants.
   // constant comparison unfolds if statements.
-  %c_param = arith.constant 20 : i32
-  %cond = arith.cmpi eq, %c_param, %c0 : i32
-  %result = scf.if %cond -> i32 {
-    // base case n=0, result=partial
-    %r = inet.construct i32 %c_param i32 %c_param i32
-    scf.yield %r : i32
-  } else {
-    // recursive case TODO
-    %cn4 = arith.subi %c_param, %c1 : i32
-    %partial3 = arith.addi %c_param, %cn4 : i32
-    %partial4 = inet.construct i32 %cn4 i32 %partial3 i32
-    scf.yield %partial4 : i32
-  }
 
-  %total, %_ = inet.coconstruct i32 %result i32, i32
-  return %total : i32
+  %n = arith.constant 4 : i32
+
+  // the first element has to be an operation
+  // because it exposes a principal.
+  %1 = arith.subi %n, %c1 : i32
+  %d1 = inet.duplicate i32 %n i32 %1 i32
+  %2 = arith.subi %1, %c1 : i32
+  %d2 = inet.duplicate i32 %2 i32 %d1 i32
+  %3 = arith.subi %2, %c1 : i32
+  %d3 = inet.duplicate i32 %3 i32 %d2 i32
+  %4 = arith.subi %3, %c1 : i32
+  %d5 = inet.duplicate i32 %4 i32 %d3 i32
+  // return %4 : i32
+
+  // every time we loop back to "s(n)=n+s(n-1)"
+  // we duplicate the branch of code that contains "if ... subi addi"
+
+  %9:2 = inet.coduplicate i32 %d5 i32, i32
+  %10:2 = inet.coduplicate i32 %9#0 i32, i32
+  %11:2 = inet.coduplicate i32 %10#0 i32, i32
+  %12:2 = inet.coduplicate i32 %11#0 i32, i32
+  %5 = arith.addi %9#1, %10#1 : i32
+  %6 = arith.addi %5, %11#1 : i32
+  %7 = arith.addi %6, %12#0 : i32
+  %8 = arith.addi %7, %12#1 : i32
+  return %8#0 : i32
 }
