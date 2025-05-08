@@ -66,6 +66,23 @@ def CoConstructDuplicateCommutation :
       (Inet_DuplicateOp $e__1, $f__1)
     ]>;
 
+
+def CapConstructDuplicateCommutation :
+  Pattern<
+    (Inet_CapOp:$a
+      (Inet_ConstructOp:$b $c, $d),
+      (Inet_DuplicateOp:$e $f, $g)),
+    [
+      (Inet_CoConstructOp:$h $f, (returnType $c, $d)),
+      (Inet_CoConstructOp:$i $g, (returnType $c, $d)),
+      (Inet_CoDuplicateOp:$j $c, (returnType $f, $g)),
+      (Inet_CoDuplicateOp:$k $d, (returnType $f, $g)),
+      (Inet_CapOp $h__0, $k__1),
+      (Inet_CapOp $h__1, $j__1),
+      (Inet_CapOp $j__0, $i__1),
+      (Inet_CapOp $k__0, $i__0)
+    ]>;
+
 //===----------------------------------------------------------------------===//
 // Simplifications
 //===----------------------------------------------------------------------===//

@@ -61,6 +61,11 @@ void inet::CoDuplicateOp::getCanonicalizationPatterns(RewritePatternSet &pattern
   patterns.add<CoDuplicateConstructCommutation>(context);
 }
 
+void inet::CapOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                              MLIRContext *context) {
+  patterns.add<CapConstructDuplicateCommutation>(context);
+}
+
 
 #include "mlir/Dialect/Inet/InetDialect.cpp.inc"
 
