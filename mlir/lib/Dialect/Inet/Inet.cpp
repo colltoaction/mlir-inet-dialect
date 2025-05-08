@@ -64,6 +64,7 @@ void inet::CoDuplicateOp::getCanonicalizationPatterns(RewritePatternSet &pattern
 void inet::CapOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                               MLIRContext *context) {
   patterns.add<CapConstructDuplicateCommutation>(context);
+  patterns.add<CapDuplicateConstructCommutation>(context);
 }
 
 

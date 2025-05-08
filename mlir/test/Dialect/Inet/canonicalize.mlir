@@ -101,3 +101,21 @@ func.func @cap_construct_duplicate_commutation(%arg0 : f64, %arg1 : f64, %arg2 :
   inet.cap f64 %a f64 %b
   return
 }
+
+// CHECK-LABEL: @cap_duplicate_construct_commutation
+// CHECK:       (%arg0: f64, %arg1: f64, %arg2: f64, %arg3: f64) {
+// CHECK-NEXT:  %0:2 = inet.coduplicate f64 %arg2 f64, f64
+// CHECK-NEXT:  %1:2 = inet.coduplicate f64 %arg3 f64, f64
+// CHECK-NEXT:  %2:2 = inet.coconstruct f64 %arg0 f64, f64
+// CHECK-NEXT:  %3:2 = inet.coconstruct f64 %arg1 f64, f64
+// CHECK-NEXT:  inet.cap f64 %0#0 f64 %3#1
+// CHECK-NEXT:  inet.cap f64 %0#1 f64 %2#1
+// CHECK-NEXT:  inet.cap f64 %2#0 f64 %1#1
+// CHECK-NEXT:  inet.cap f64 %3#0 f64 %1#0
+// CHECK-NEXT:  return
+func.func @cap_duplicate_construct_commutation(%arg0 : f64, %arg1 : f64, %arg2 : f64, %arg3 : f64) {
+  %a = inet.duplicate f64 %arg0 f64 %arg1 f64
+  %b = inet.construct f64 %arg2 f64 %arg3 f64
+  inet.cap f64 %a f64 %b
+  return
+}
