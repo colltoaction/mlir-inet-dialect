@@ -64,5 +64,10 @@ def Inet_CoDuplicateOp : Inet_Op<"coduplicate"> {
   let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
 }
 
+def Inet_CapOp : Inet_Op<"cap", []> {
+  let arguments = (ins AnyType:$left, AnyType:$right);
+  let assemblyFormat = "type($left) $left type($right) $right attr-dict-with-keyword";
+}
+
 
 #endif // MLIR_DIALECT_INET_INET
