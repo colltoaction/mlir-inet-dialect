@@ -34,6 +34,7 @@ void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                   MLIRContext *context) {
   patterns.add<CoEraseEraseAnnihilation>(context);
   patterns.add<CoEraseConstructCommutation>(context);
+  patterns.add<CoEraseDuplicateCommutation>(context);
 }
 
 void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,

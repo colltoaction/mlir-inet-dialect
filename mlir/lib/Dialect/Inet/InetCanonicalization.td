@@ -30,13 +30,19 @@ def CoDuplicateDuplicateAnnihilation :
 def CoEraseConstructCommutation :
   Pattern<
     (Inet_CoEraseOp:$a (Inet_ConstructOp $b, $c)),
-    []>;
+    [
+      (Inet_CoEraseOp $b),
+      (Inet_CoEraseOp $c),
+    ]>;
 
 
 def CoEraseDuplicateCommutation :
   Pattern<
     (Inet_CoEraseOp:$a (Inet_DuplicateOp $b, $c)),
-    []>;
+    [
+      (Inet_CoEraseOp $b),
+      (Inet_CoEraseOp $c),
+    ]>;
 
 
 def CoConstructEraseCommutation :

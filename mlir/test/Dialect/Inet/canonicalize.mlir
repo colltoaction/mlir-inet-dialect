@@ -32,6 +32,8 @@ func.func @coduplicate_duplicate_annihilation(%arg0 : f64, %arg1 : f64) -> (f64,
 
 // CHECK-LABEL: @coerase_construct_commutation
 // CHECK:       (%arg0: f64, %arg1: f64) {
+// CHECK-NEXT:  inet.coerase f64 %arg0
+// CHECK-NEXT:  inet.coerase f64 %arg1
 // CHECK-NEXT:  return
 func.func @coerase_construct_commutation(%arg0 : f64, %arg1 : f64) -> () {
   %a = inet.construct f64 %arg0 f64 %arg1 f64
@@ -41,6 +43,8 @@ func.func @coerase_construct_commutation(%arg0 : f64, %arg1 : f64) -> () {
 
 // CHECK-LABEL: @coerase_duplicate_commutation
 // CHECK:       (%arg0: f64, %arg1: f64) {
+// CHECK-NEXT:  inet.coerase f64 %arg0
+// CHECK-NEXT:  inet.coerase f64 %arg1
 // CHECK-NEXT:  return
 func.func @coerase_duplicate_commutation(%arg0 : f64, %arg1 : f64) -> () {
   %a = inet.duplicate f64 %arg0 f64 %arg1 f64
@@ -116,6 +120,18 @@ func.func @cap_construct_duplicate_commutation(%arg0 : f64, %arg1 : f64, %arg2 :
 func.func @cap_duplicate_construct_commutation(%arg0 : f64, %arg1 : f64, %arg2 : f64, %arg3 : f64) {
   %a = inet.duplicate f64 %arg0 f64 %arg1 f64
   %b = inet.construct f64 %arg2 f64 %arg3 f64
+  inet.cap f64 %a f64 %b
+  return
+}
+
+// CHECK-LABEL: @cap_construct_erase_commutation
+// CHECK:       (%arg0: f64, %arg1: f64) {
+// CHECK-NEXT:  inet.coerase f64 %arg0
+// CHECK-NEXT:  inet.coerase f64 %arg1
+// CHECK-NEXT:  return
+func.func @cap_construct_erase_commutation(%arg0 : f64, %arg1 : f64) {
+  %a = inet.erase f64
+  %b = inet.construct f64 %arg0 f64 %arg1 f64
   inet.cap f64 %a f64 %b
   return
 }
