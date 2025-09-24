@@ -15,6 +15,12 @@ def CoEraseEraseAnnihilation :
     []>;
 
 
+def CoEraseErase2Annihilation :
+  Pattern<
+    (Inet_Erase2Op (Inet_EraseOp:$a)),
+    []>;
+
+
 def CoConstructConstructAnnihilation :
   Pattern<
     (Inet_CoConstructOp (Inet_ConstructOp $a, $b)),
@@ -105,6 +111,53 @@ def CapDuplicateConstructCommutation :
       (Inet_CapOp $j__0, $i__1),
       (Inet_CapOp $k__0, $i__0)
     ]>;
+
+def CoEraseCupCommutation :
+  Pattern<
+    (Inet_CoEraseOp:$a
+      (Inet_CupOp:$e)),
+    [
+      (Inet_EraseOp:$b (returnType $e__1)),
+      (Inet_CapOp $b, $e__1)
+    ]>;
+
+def CapCupStraighten :
+  Pattern<
+    (Inet_CapOp:$a
+      (Inet_CupOp:$e), $f),
+    [
+      (replaceWithValue $e__1),
+      (replaceWithValue $f)
+    ]>;
+
+
+// This is key to implement recursion
+def CupCoConstructCoConstructAnnihilation :
+  Pattern<
+    (Inet_CoConstructOp:$a
+      (Inet_CupOp:$e)),
+    [
+      (Inet_CupOp:$f (returnType $e__0, $e__1)),
+      (Inet_CupOp:$g (returnType $e__0, $e__1)),
+      (Inet_ConstructOp:$h $f__0, $g__0, (returnType $e__0)),
+      (Inet_CapOp:$i $h, $e__0),
+      (replaceWithValue $f__1),
+      (replaceWithValue $g__1)
+    ]>;
+
+def CupCoDuplicateAnnihilation :
+  Pattern<
+    (Inet_CoDuplicateOp:$a
+      (Inet_CupOp:$e)),
+    [
+      (Inet_CupOp:$f (returnType $e__0, $e__1)),
+      (Inet_CupOp:$g (returnType $e__0, $e__1)),
+      (Inet_DuplicateOp:$h $f__0, $g__0, (returnType $e__0)),
+      // (Inet_CapOp:$i $h, $e__1),
+      (replaceWithValue $f__1),
+      (replaceWithValue $g__1)
+    ]>;
+
 
 //===----------------------------------------------------------------------===//
 // Simplifications

@@ -11,6 +11,8 @@
 #include "mlir/IR/PatternMatch.h"
 #include "mlir/IR/RegionKindInterface.h"
 #include "mlir/IR/TypeUtilities.h"
+#include "mlir/Interfaces/FunctionInterfaces.h"
+#include "mlir/Interfaces/ControlFlowInterfaces.h"
 #include "mlir/Interfaces/InferTypeOpInterface.h"
 
 using namespace mlir;
@@ -26,6 +28,15 @@ namespace {
 
 
 
+void inet::InetOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                               MLIRContext *context) {
+}
+
+void inet::Erase2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                 MLIRContext *context) {
+  patterns.add<CoEraseErase2Annihilation>(context);
+}
+
 void inet::EraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                 MLIRContext *context) {
 }
@@ -35,6 +46,11 @@ void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
   patterns.add<CoEraseEraseAnnihilation>(context);
   patterns.add<CoEraseConstructCommutation>(context);
   patterns.add<CoEraseDuplicateCommutation>(context);
+  patterns.add<CoEraseCupCommutation>(context);
+}
+
+void inet::Construct2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                     MLIRContext *context) {
 }
 
 void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
@@ -48,6 +64,7 @@ void inet::CoConstructOp::getCanonicalizationPatterns(RewritePatternSet &pattern
   patterns.add<CoConstructConstructAnnihilation>(context);
   patterns.add<CoConstructEraseCommutation>(context);
   patterns.add<CoConstructDuplicateCommutation>(context);
+  patterns.add<CupCoConstructCoConstructAnnihilation>(context);
 }
 
 void inet::DuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
@@ -60,12 +77,40 @@ void inet::CoDuplicateOp::getCanonicalizationPatterns(RewritePatternSet &pattern
                                                       MLIRContext *context) {
   patterns.add<CoDuplicateDuplicateAnnihilation>(context);
   patterns.add<CoDuplicateConstructCommutation>(context);
+  // patterns.add<CoDuplicateCupToCapDuplicate>(context);
+  // patterns.add<CupCoDuplicateAnnihilation>(context);
+}
+
+void inet::Cap2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                               MLIRContext *context) {
 }
 
 void inet::CapOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                               MLIRContext *context) {
   patterns.add<CapConstructDuplicateCommutation>(context);
   patterns.add<CapDuplicateConstructCommutation>(context);
+  patterns.add<CapCupStraighten>(context);
+}
+
+void inet::CupOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                              MLIRContext *context) {
+  // patterns.add<CupSplit>(context);
+}
+
+void inet::CapLeftOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                  MLIRContext *context) {
+}
+
+void inet::CupLeftOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                  MLIRContext *context) {
+}
+
+void inet::CapRightOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                   MLIRContext *context) {
+}
+
+void inet::CupRightOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                   MLIRContext *context) {
 }
 
 
