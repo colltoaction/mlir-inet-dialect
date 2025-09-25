@@ -34,22 +34,28 @@ class Inet_Op<string mnemonic, list<Trait> traits =[Pure]> :
 
 
 def Inet_InetOp : Inet_Op<"inet", [
-  // DeclareOpInterfaceMethods<RegionBranchOpInterface>
+  DeclareOpInterfaceMethods<RegionBranchOpInterface, ["getSuccessorRegions"]>,
 ]> {
   let arguments = (ins);
   let results = (outs);
-  let regions = (region VariadicRegion<AnyRegion>:$regions);
+  let regions = (region AnyRegion:$defaultRegion);
+  let extraClassDefinition = [{
+    void $cppClass::getSuccessorRegions(
+        mlir::RegionBranchPoint point,
+        llvm::SmallVectorImpl<mlir::RegionSuccessor> &successors) {
+      // llvm::append_range(successors, &getRegions());
+      mlir::Region *targetRegion = &getDefaultRegion();
+      successors.emplace_back(targetRegion);
+    }
+  }];
   let assemblyFormat = [{
-    attr-dict-with-keyword $regions
+    attr-dict-with-keyword $defaultRegion
   }];
 }
 
 def Inet_Erase2Op : Inet_Op<"erase2", [
   Terminator,
   DeclareOpInterfaceMethods<BranchOpInterface>,
-  // DeclareOpInterfaceMethods<RegionBranchTerminatorOpInterface, ["getSuccessorRegions"]>,
-  // ReturnLike,
-  HasParent<"InetOp">
 ]> {
   let extraClassDefinition = [{
     mlir::SuccessorOperands $cppClass::getSuccessorOperands(unsigned index) {
@@ -69,6 +75,32 @@ def Inet_EraseOp : Inet_Op<"erase", []> {
 def Inet_CoEraseOp : Inet_Op<"coerase", []> {
   let arguments = (ins AnyType:$principal);
   let assemblyFormat = "type($principal) $principal attr-dict-with-keyword";
+}
+
+def Inet_CoErase2Op : Inet_Op<"coerase2", [
+  Terminator,
+  DeclareOpInterfaceMethods<RegionBranchOpInterface, ["getEntrySuccessorRegions"]>,
+  HasParent<"InetOp">,
+]> {
+  let regions = (region AnyRegion:$defaultRegion);
+  let extraClassDefinition = [{
+    void $cppClass::getEntrySuccessorRegions(
+        ArrayRef<Attribute> operands,
+        llvm::SmallVectorImpl<mlir::RegionSuccessor> &successors) {
+      // llvm::append_range(successors, getRegions());
+      mlir::Region *targetRegion = &getDefaultRegion();
+      successors.emplace_back(targetRegion);
+    }
+    void $cppClass::getSuccessorRegions(
+        mlir::RegionBranchPoint point,
+        llvm::SmallVectorImpl<mlir::RegionSuccessor> &successors) {
+      mlir::Region *targetRegion = &getDefaultRegion();
+      successors.emplace_back(targetRegion);
+    }
+  }];
+  let assemblyFormat = [{
+    attr-dict-with-keyword $defaultRegion
+  }];
 }
 
 def Inet_Construct2Op : Inet_Op<"construct2", [Terminator]> {
@@ -101,9 +133,12 @@ def Inet_CoDuplicateOp : Inet_Op<"coduplicate"> {
   let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
 }
 
-def Inet_Cap2Op : Inet_Op<"cap2", [Terminator]> {
-  let successors = (successor AnySuccessor:$left, AnySuccessor:$right);
-  let assemblyFormat = "$left $right attr-dict-with-keyword";
+def Inet_Cap2Op : Inet_Op<"cap2", [
+  Terminator,
+  ReturnLike,
+]> {
+  let arguments = (ins AnyType:$left, AnyType:$right);
+  let assemblyFormat = "type($left) $left type($right) $right attr-dict-with-keyword";
 }
 
 def Inet_CapOp : Inet_Op<"cap", []> {
@@ -114,6 +149,20 @@ def Inet_CapOp : Inet_Op<"cap", []> {
 def Inet_CupOp : Inet_Op<"cup"> {
   let results = (outs AnyType, AnyType);
   let assemblyFormat = "type(results) attr-dict-with-keyword";
+}
+
+def Inet_Cup2Op : Inet_Op<"cup2", [
+  Terminator,
+  DeclareOpInterfaceMethods<BranchOpInterface>,
+]> {
+  let extraClassDefinition = [{
+    mlir::SuccessorOperands $cppClass::getSuccessorOperands(unsigned index) {
+      return SuccessorOperands(mlir::MutableOperandRange(getOperation(), 0, 2));
+    }
+  }];
+  let arguments = (ins AnyType:$left, AnyType:$right);
+  let successors = (successor AnySuccessor:$target);
+  let assemblyFormat = "$target type($left) $left type($right) $right attr-dict-with-keyword";
 }
 
 def Inet_CapLeftOp : Inet_Op<"cap_left", []> {

@@ -41,6 +41,10 @@ void inet::EraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                 MLIRContext *context) {
 }
 
+void inet::CoErase2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                  MLIRContext *context) {
+}
+
 void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                   MLIRContext *context) {
   patterns.add<CoEraseEraseAnnihilation>(context);
@@ -95,6 +99,10 @@ void inet::CapOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
 void inet::CupOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                               MLIRContext *context) {
   // patterns.add<CupSplit>(context);
+}
+
+void inet::Cup2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                               MLIRContext *context) {
 }
 
 void inet::CapLeftOp::getCanonicalizationPatterns(RewritePatternSet &patterns,

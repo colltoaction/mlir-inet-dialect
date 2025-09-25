@@ -14,21 +14,24 @@ func.func @cup_coerase_coconstruct_commutation(%arg0: f64) -> () {
   inet.inet {
     ^bb1:
     %0 = inet.erase f64
-    inet.erase2 ^bb4 %0 f64
+    inet.cup2 ^bb4 f64 %arg0 f64 %arg0
     ^bb2(%arg2: f64):
     inet.erase2 ^bb3 %arg2 f64
     ^bb3(%arg3: f64):
-    inet.coerase f64 %arg3
-    inet.erase2 ^bb4 %arg0 f64
-    ^bb4(%arg4: f64):
+    inet.coerase2 {
+      ^bb8(%pepe: f64):
+      inet.erase2 ^bb7 %0 f64
+      // inet.cup2 ^bb7 f64 %arg0 f64 %arg0
+      // inet.cap2 f64 %0 f64 %0
+      ^bb7(%arg7: f64):
+      // inet.cap2 f64 %arg7 f64 %arg7
+      inet.erase2 ^bb7 %0 f64
+    }
+    ^bb4(%arg4: f64, %arg11: f64):
     inet.coerase f64 %arg4
-    inet.erase2 ^bb4 %arg0 f64
-  }, {
-    ^bb6:
-    %0 = inet.erase f64
-    inet.erase2 ^bb5 %0 f64
-    ^bb5(%arg1: f64):
-    inet.erase2 ^bb5 %arg1 f64
+    inet.erase2 ^bb3 %arg0 f64
+    ^bb42:
+    inet.erase2 ^bb3 %arg0 f64
   }
   return
 }
