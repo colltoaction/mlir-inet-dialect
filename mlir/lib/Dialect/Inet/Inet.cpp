@@ -71,6 +71,10 @@ void inet::CoConstructOp::getCanonicalizationPatterns(RewritePatternSet &pattern
   patterns.add<CupCoConstructCoConstructAnnihilation>(context);
 }
 
+void inet::CoDuplicate2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                       MLIRContext *context) {
+}
+
 void inet::DuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                     MLIRContext *context) {
   patterns.add<DuplicateEraseLeftSimplification>(context);

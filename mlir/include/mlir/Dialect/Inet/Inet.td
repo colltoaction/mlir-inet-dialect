@@ -103,10 +103,19 @@ def Inet_CoErase2Op : Inet_Op<"coerase2", [
   }];
 }
 
-def Inet_Construct2Op : Inet_Op<"construct2", [Terminator]> {
-  let arguments = (ins AnyType:$left, AnyType:$right);
-  let successors = (successor AnySuccessor:$principal);
-  let assemblyFormat = "$principal type($left) $left type($right) $right attr-dict-with-keyword";
+def Inet_Construct2Op : Inet_Op<"construct2", [
+  Terminator,
+  DeclareOpInterfaceMethods<BranchOpInterface>,
+]> {
+  let arguments = (ins AnyType:$principal);
+  let results = (outs AnyType:$left, AnyType:$right);
+  let successors = (successor AnySuccessor:$target);
+  let extraClassDefinition = [{
+    mlir::SuccessorOperands $cppClass::getSuccessorOperands(unsigned index) {
+      return SuccessorOperands(mlir::MutableOperandRange(getOperation(), 0, 1));
+    }
+  }];
+  let assemblyFormat = "$target $principal`:` type($principal) type(results) attr-dict-with-keyword";
 }
 
 def Inet_ConstructOp : Inet_Op<"construct"> {
@@ -119,6 +128,21 @@ def Inet_CoConstructOp : Inet_Op<"coconstruct"> {
   let arguments = (ins AnyType:$principal);
   let results = (outs AnyType, AnyType);
   let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
+}
+
+def Inet_CoDuplicate2Op : Inet_Op<"coduplicate2", [
+  Terminator,
+  DeclareOpInterfaceMethods<BranchOpInterface>,
+]> {
+  let arguments = (ins AnyType:$left, AnyType:$right);
+  let results = (outs AnyType);
+  let successors = (successor AnySuccessor:$target);
+  let extraClassDefinition = [{
+    mlir::SuccessorOperands $cppClass::getSuccessorOperands(unsigned index) {
+      return SuccessorOperands(mlir::MutableOperandRange(getOperation(), 0, 2));
+    }
+  }];
+  let assemblyFormat = "$target $left`:` type($left) $right `:` type($right) type(results) attr-dict-with-keyword";
 }
 
 def Inet_DuplicateOp : Inet_Op<"duplicate"> {
@@ -157,12 +181,12 @@ def Inet_Cup2Op : Inet_Op<"cup2", [
 ]> {
   let extraClassDefinition = [{
     mlir::SuccessorOperands $cppClass::getSuccessorOperands(unsigned index) {
-      return SuccessorOperands(mlir::MutableOperandRange(getOperation(), 0, 2));
+      return SuccessorOperands(mlir::MutableOperandRange(getOperation()));
     }
   }];
-  let arguments = (ins AnyType:$left, AnyType:$right);
+  let results = (outs AnyType:$left, AnyType:$right);
   let successors = (successor AnySuccessor:$target);
-  let assemblyFormat = "$target type($left) $left type($right) $right attr-dict-with-keyword";
+  let assemblyFormat = "$target type($left) type($right) attr-dict-with-keyword";
 }
 
 def Inet_CapLeftOp : Inet_Op<"cap_left", []> {
