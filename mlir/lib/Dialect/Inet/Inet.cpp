@@ -57,6 +57,10 @@ void inet::Construct2Op::getCanonicalizationPatterns(RewritePatternSet &patterns
                                                      MLIRContext *context) {
 }
 
+void inet::Duplicate2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                     MLIRContext *context) {
+}
+
 void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                     MLIRContext *context) {
   patterns.add<ConstructEraseLeftSimplification>(context);
@@ -69,6 +73,10 @@ void inet::CoConstructOp::getCanonicalizationPatterns(RewritePatternSet &pattern
   patterns.add<CoConstructEraseCommutation>(context);
   patterns.add<CoConstructDuplicateCommutation>(context);
   patterns.add<CupCoConstructCoConstructAnnihilation>(context);
+}
+
+void inet::CoConstruct2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                       MLIRContext *context) {
 }
 
 void inet::CoDuplicate2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,

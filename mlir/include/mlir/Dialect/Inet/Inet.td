@@ -118,6 +118,21 @@ def Inet_Construct2Op : Inet_Op<"construct2", [
   let assemblyFormat = "$target $principal`:` type($principal) type(results) attr-dict-with-keyword";
 }
 
+def Inet_Duplicate2Op : Inet_Op<"duplicate2", [
+  Terminator,
+  DeclareOpInterfaceMethods<BranchOpInterface>,
+]> {
+  let arguments = (ins AnyType:$principal);
+  let results = (outs AnyType:$left, AnyType:$right);
+  let successors = (successor AnySuccessor:$target);
+  let extraClassDefinition = [{
+    mlir::SuccessorOperands $cppClass::getSuccessorOperands(unsigned index) {
+      return SuccessorOperands(mlir::MutableOperandRange(getOperation(), 0, 1));
+    }
+  }];
+  let assemblyFormat = "$target $principal`:` type($principal) type(results) attr-dict-with-keyword";
+}
+
 def Inet_ConstructOp : Inet_Op<"construct"> {
   let arguments = (ins AnyType:$left, AnyType:$right);
   let results = (outs AnyType);
@@ -128,6 +143,21 @@ def Inet_CoConstructOp : Inet_Op<"coconstruct"> {
   let arguments = (ins AnyType:$principal);
   let results = (outs AnyType, AnyType);
   let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
+}
+
+def Inet_CoConstruct2Op : Inet_Op<"coconstruct2", [
+  Terminator,
+  DeclareOpInterfaceMethods<BranchOpInterface>,
+]> {
+  let arguments = (ins AnyType:$left, AnyType:$right);
+  let results = (outs AnyType);
+  let successors = (successor AnySuccessor:$target);
+  let extraClassDefinition = [{
+    mlir::SuccessorOperands $cppClass::getSuccessorOperands(unsigned index) {
+      return SuccessorOperands(mlir::MutableOperandRange(getOperation(), 0, 2));
+    }
+  }];
+  let assemblyFormat = "$target $left`:` type($left) $right `:` type($right) type(results) attr-dict-with-keyword";
 }
 
 def Inet_CoDuplicate2Op : Inet_Op<"coduplicate2", [
@@ -159,10 +189,15 @@ def Inet_CoDuplicateOp : Inet_Op<"coduplicate"> {
 
 def Inet_Cap2Op : Inet_Op<"cap2", [
   Terminator,
-  ReturnLike,
+  DeclareOpInterfaceMethods<BranchOpInterface>,
 ]> {
   let arguments = (ins AnyType:$left, AnyType:$right);
-  let assemblyFormat = "type($left) $left type($right) $right attr-dict-with-keyword";
+  let extraClassDefinition = [{
+    mlir::SuccessorOperands $cppClass::getSuccessorOperands(unsigned index) {
+      return SuccessorOperands(mlir::MutableOperandRange(getOperation()));
+    }
+  }];
+  let assemblyFormat = "$left`:` type($left) $right `:` type($right) attr-dict-with-keyword";
 }
 
 def Inet_CapOp : Inet_Op<"cap", []> {
