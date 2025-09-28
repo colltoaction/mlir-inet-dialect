@@ -36,7 +36,8 @@ class Inet_Op<string mnemonic, list<Trait> traits =[Pure]> :
 def Inet_InetOp : Inet_Op<"inet", [
   DeclareOpInterfaceMethods<RegionBranchOpInterface, ["getSuccessorRegions"]>,
 ]> {
-  let arguments = (ins);
+  let arguments = (ins SymbolNameAttr:$sym_name,
+                       TypeAttrOf<FunctionType>:$function_type);
   let results = (outs);
   let regions = (region AnyRegion:$defaultRegion);
   let extraClassDefinition = [{
@@ -49,7 +50,7 @@ def Inet_InetOp : Inet_Op<"inet", [
     }
   }];
   let assemblyFormat = [{
-    attr-dict-with-keyword $defaultRegion
+    $sym_name $function_type attr-dict-with-keyword $defaultRegion
   }];
 }
 
