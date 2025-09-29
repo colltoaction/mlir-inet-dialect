@@ -81,10 +81,6 @@ void inet::CupOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                               MLIRContext *context) {
 }
 
-void inet::Cup2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                               MLIRContext *context) {
-}
-
 
 #include "mlir/Dialect/Inet/InetDialect.cpp.inc"
 

@@ -93,6 +93,7 @@ def Inet_EraseOp : Inet_Op<"erase", [
 }
 
 def Inet_CoEraseOp : Inet_Op<"coerase", [
+  Pure,
   HasParent<"InetOp">,
 ]> {
   let results = (outs AnyType);
@@ -116,6 +117,7 @@ def Inet_DuplicateOp : Inet_Op<"duplicate", [
 }
 
 def Inet_CoConstructOp : Inet_Op<"coconstruct", [
+  Pure,
   HasParent<"InetOp">,
 ]> {
   let arguments = (ins AnyType:$left, AnyType:$right);
@@ -124,6 +126,7 @@ def Inet_CoConstructOp : Inet_Op<"coconstruct", [
 }
 
 def Inet_CoDuplicateOp : Inet_Op<"coduplicate", [
+  Pure,
   HasParent<"InetOp">,
 ]> {
   let arguments = (ins AnyType:$left, AnyType:$right);
@@ -138,7 +141,9 @@ def Inet_CapOp : Inet_Op<"cap", [
   let assemblyFormat = "$left`,` $right `:` type($left)`,` type($right) attr-dict-with-keyword";
 }
 
-def Inet_CupOp : Inet_Op<"cup"> {
+def Inet_CupOp : Inet_Op<"cup", [
+  Pure,
+]> {
   let results = (outs AnyType, AnyType);
   let assemblyFormat = "type(results) attr-dict-with-keyword";
 }
