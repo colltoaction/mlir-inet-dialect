@@ -32,6 +32,10 @@ void inet::InetOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                MLIRContext *context) {
 }
 
+void inet::ReturnOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                 MLIRContext *context) {
+}
+
 void inet::Erase2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                  MLIRContext *context) {
   patterns.add<CoEraseErase2Annihilation>(context);
