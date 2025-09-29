@@ -86,30 +86,20 @@ def Inet_ReturnOp : Inet_Op<"return", [
   let hasVerifier = 1;
 }
 
-def Inet_Erase2Op : Inet_Op<"erase2", [
+def Inet_EraseOp : Inet_Op<"erase", [
 ]> {
   let arguments = (ins AnyType:$principal);
   let assemblyFormat = "$principal`:` type($principal) attr-dict-with-keyword";
 }
 
-def Inet_EraseOp : Inet_Op<"erase", []> {
-  let results = (outs AnyType);
-  let assemblyFormat = "type(results) attr-dict-with-keyword";
-}
-
-def Inet_CoEraseOp : Inet_Op<"coerase", []> {
-  let arguments = (ins AnyType:$principal);
-  let assemblyFormat = "$principal`:` type($principal) attr-dict-with-keyword";
-}
-
-def Inet_CoErase2Op : Inet_Op<"coerase2", [
+def Inet_CoEraseOp : Inet_Op<"coerase", [
   HasParent<"InetOp">,
 ]> {
   let results = (outs AnyType);
   let assemblyFormat = "type(results) attr-dict-with-keyword";
 }
 
-def Inet_Construct2Op : Inet_Op<"construct2", [
+def Inet_ConstructOp : Inet_Op<"construct", [
   HasParent<"InetOp">,
 ]> {
   let arguments = (ins AnyType:$principal);
@@ -117,7 +107,7 @@ def Inet_Construct2Op : Inet_Op<"construct2", [
   let assemblyFormat = "$principal`:` type($principal) `->` type(results) attr-dict-with-keyword";
 }
 
-def Inet_Duplicate2Op : Inet_Op<"duplicate2", [
+def Inet_DuplicateOp : Inet_Op<"duplicate", [
   HasParent<"InetOp">,
 ]> {
   let arguments = (ins AnyType:$principal);
@@ -125,19 +115,7 @@ def Inet_Duplicate2Op : Inet_Op<"duplicate2", [
   let assemblyFormat = "$principal`:` type($principal) `->` type(results) attr-dict-with-keyword";
 }
 
-def Inet_ConstructOp : Inet_Op<"construct"> {
-  let arguments = (ins AnyType:$left, AnyType:$right);
-  let results = (outs AnyType);
-  let assemblyFormat = "$left`,` $right `:` type($left)`,` type($right) type(results) attr-dict-with-keyword";
-}
-
-def Inet_CoConstructOp : Inet_Op<"coconstruct"> {
-  let arguments = (ins AnyType:$principal);
-  let results = (outs AnyType, AnyType);
-  let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
-}
-
-def Inet_CoConstruct2Op : Inet_Op<"coconstruct2", [
+def Inet_CoConstructOp : Inet_Op<"coconstruct", [
   HasParent<"InetOp">,
 ]> {
   let arguments = (ins AnyType:$left, AnyType:$right);
@@ -145,7 +123,7 @@ def Inet_CoConstruct2Op : Inet_Op<"coconstruct2", [
   let assemblyFormat = "$left`,` $right `:` type($left)`,` type($right) `->` type(results) attr-dict-with-keyword";
 }
 
-def Inet_CoDuplicate2Op : Inet_Op<"coduplicate2", [
+def Inet_CoDuplicateOp : Inet_Op<"coduplicate", [
   HasParent<"InetOp">,
 ]> {
   let arguments = (ins AnyType:$left, AnyType:$right);
@@ -153,64 +131,16 @@ def Inet_CoDuplicate2Op : Inet_Op<"coduplicate2", [
   let assemblyFormat = "$left`,` $right `:` type($left)`,` type($right) `->` type(results) attr-dict-with-keyword";
 }
 
-def Inet_DuplicateOp : Inet_Op<"duplicate"> {
-  let arguments = (ins AnyType:$left, AnyType:$right);
-  let results = (outs AnyType);
-  let assemblyFormat = "type($left) $left type($right) $right type(results) attr-dict-with-keyword";
-}
-
-def Inet_CoDuplicateOp : Inet_Op<"coduplicate"> {
-  let arguments = (ins AnyType:$principal);
-  let results = (outs AnyType, AnyType);
-  let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
-}
-
-def Inet_Cap2Op : Inet_Op<"cap2", [
+def Inet_CapOp : Inet_Op<"cap", [
   HasParent<"InetOp">,
 ]> {
   let arguments = (ins AnyType:$left, AnyType:$right);
   let assemblyFormat = "$left`,` $right `:` type($left)`,` type($right) attr-dict-with-keyword";
 }
 
-def Inet_CapOp : Inet_Op<"cap", []> {
-  let arguments = (ins AnyType:$left, AnyType:$right);
-  let assemblyFormat = "type($left) $left type($right) $right attr-dict-with-keyword";
-}
-
 def Inet_CupOp : Inet_Op<"cup"> {
   let results = (outs AnyType, AnyType);
   let assemblyFormat = "type(results) attr-dict-with-keyword";
 }
-
-def Inet_Cup2Op : Inet_Op<"cup2", [
-]> {
-  let results = (outs AnyType:$left, AnyType:$right);
-  let assemblyFormat = "type($left) type($right) attr-dict-with-keyword";
-}
-
-def Inet_CapLeftOp : Inet_Op<"cap_left", []> {
-  let arguments = (ins AnyType:$principal);
-  let results = (outs AnyType);
-  let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
-}
-
-def Inet_CupLeftOp : Inet_Op<"cup_left", []> {
-  let arguments = (ins AnyType:$principal);
-  let results = (outs AnyType);
-  let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
-}
-
-def Inet_CapRightOp : Inet_Op<"cap_right", []> {
-  let arguments = (ins AnyType:$principal);
-  let results = (outs AnyType);
-  let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
-}
-
-def Inet_CupRightOp : Inet_Op<"cup_right", []> {
-  let arguments = (ins AnyType:$principal);
-  let results = (outs AnyType);
-  let assemblyFormat = "type($principal) $principal type(results) attr-dict-with-keyword";
-}
-
 
 #endif // MLIR_DIALECT_INET_INET

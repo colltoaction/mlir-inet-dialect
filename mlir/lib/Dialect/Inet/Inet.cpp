@@ -36,73 +36,38 @@ void inet::ReturnOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                  MLIRContext *context) {
 }
 
-void inet::Erase2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                 MLIRContext *context) {
-  patterns.add<CoEraseErase2Annihilation>(context);
-}
-
 void inet::EraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                 MLIRContext *context) {
-}
-
-void inet::CoErase2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                  MLIRContext *context) {
-}
-
-void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                  MLIRContext *context) {
   patterns.add<CoEraseEraseAnnihilation>(context);
   patterns.add<CoEraseConstructCommutation>(context);
   patterns.add<CoEraseDuplicateCommutation>(context);
   patterns.add<CoEraseCupCommutation>(context);
 }
 
-void inet::Construct2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                     MLIRContext *context) {
-}
-
-void inet::Duplicate2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                     MLIRContext *context) {
+void inet::CoEraseOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                  MLIRContext *context) {
 }
 
 void inet::ConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                     MLIRContext *context) {
-  patterns.add<ConstructEraseLeftSimplification>(context);
-  patterns.add<ConstructEraseRightSimplification>(context);
-}
-
-void inet::CoConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                      MLIRContext *context) {
   patterns.add<CoConstructConstructAnnihilation>(context);
   patterns.add<CoConstructEraseCommutation>(context);
   patterns.add<CoConstructDuplicateCommutation>(context);
   patterns.add<CupCoConstructCoConstructAnnihilation>(context);
 }
 
-void inet::CoConstruct2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                       MLIRContext *context) {
-}
-
-void inet::CoDuplicate2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                       MLIRContext *context) {
+void inet::CoConstructOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
+                                                      MLIRContext *context) {
 }
 
 void inet::DuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                     MLIRContext *context) {
-  patterns.add<DuplicateEraseLeftSimplification>(context);
-  patterns.add<DuplicateEraseRightSimplification>(context);
+  patterns.add<CoDuplicateDuplicateAnnihilation>(context);
+  patterns.add<CoDuplicateConstructCommutation>(context);
 }
 
 void inet::CoDuplicateOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                       MLIRContext *context) {
-  patterns.add<CoDuplicateDuplicateAnnihilation>(context);
-  patterns.add<CoDuplicateConstructCommutation>(context);
-  // patterns.add<CoDuplicateCupToCapDuplicate>(context);
-  // patterns.add<CupCoDuplicateAnnihilation>(context);
-}
-
-void inet::Cap2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                               MLIRContext *context) {
 }
 
 void inet::CapOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
@@ -114,27 +79,10 @@ void inet::CapOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
 
 void inet::CupOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                               MLIRContext *context) {
-  // patterns.add<CupSplit>(context);
 }
 
 void inet::Cup2Op::getCanonicalizationPatterns(RewritePatternSet &patterns,
                                                MLIRContext *context) {
-}
-
-void inet::CapLeftOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                  MLIRContext *context) {
-}
-
-void inet::CupLeftOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                  MLIRContext *context) {
-}
-
-void inet::CapRightOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                   MLIRContext *context) {
-}
-
-void inet::CupRightOp::getCanonicalizationPatterns(RewritePatternSet &patterns,
-                                                   MLIRContext *context) {
 }
 
 
